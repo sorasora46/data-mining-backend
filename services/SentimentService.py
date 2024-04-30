@@ -6,24 +6,21 @@ def getSentimentAnalysis(tweet):
     orgTweets = searchTweetByMultipleOrgs(orgList)
     orgSentiment = orgTweets
     for org in orgTweets:
-        print(orgTweets[org])
-        # orgSentiment[org] = average(analyze(orgTweets[org]))
+        orgSentiment[org] = average(analyze(orgTweets[org]))
     return orgSentiment
 
 # receive list of tweets from an org
 def analyze(tweets):
     result = []
-    for i in len(tweets):
+    for i in range(len(tweets)):
         # do sentiment analysis
         # result = getSentiment(tweet)
-        result[i] = 5
-        break
+        result.append(5)
     return result
 
+# receive list of sentiment score
 def average(score):
     sum = 0.0
-    print(score)
-    return 0
-    # for i in score:
-    #     sum += i
-    # return sum / len(score)
+    for i in score:
+        sum += i
+    return sum / len(score)
