@@ -19,7 +19,7 @@ def extractProduct(text):
     # orgEnts = [ent.text for ent in doc.ents if ent.label_ == 'BRAND' or ent.label_ == 'ORG']
     productEnts = [ent.text for ent in doc.ents if ent.label_ == 'PRODUCT']
     if len(productEnts) > 0:
-        return productEnts
+        return productEnts[0]
     return
 
 def extractLink(text):

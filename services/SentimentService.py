@@ -6,8 +6,8 @@ from services.NLPService import clean, extractProduct
 from services.DBService import searchTweetByMultipleOrgs
 
 def getSentimentAnalysis(tweet):
-    productList = extractProduct(clean(tweet))
-    if productList == None:
+    productName = extractProduct(clean(tweet))
+    if productName == None:
         return
 
     orgTweets = searchTweetByMultipleOrgs(orgList)
