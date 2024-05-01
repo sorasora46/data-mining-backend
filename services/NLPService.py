@@ -52,8 +52,7 @@ def clean(text):
 
     tokens = text.split(' ')
     tokens = [token for token in tokens if token.lower() not in stopWords]
-
     
-    cleanedText = ' '.join(tokens)
+    cleanedText = ' '.join(tokens).lower().strip()
 
     return cleanedText
