@@ -37,22 +37,55 @@ def extractOrg(text):
 
 def extractProductOllama(text):
     prompt = generatePrompt(text)
-    url = 'http://94.100.26.141:25789/api/generate'
+    SYSTEM_PROMPT = "You are a smart and intelligent Named Entity Recognition (NER) system. I will provide you the definition of the entities you need to extract and the sentence from which you need to extract the entities and the output in given format with examples."
+    USER_PROMPT_1 = "Are you clear about your role?"
+    ASSISTANT_PROMPT_1 = "Sure, I'm ready to help you with your NER task. Please provide me with the necessary information to get started."
+    url = 'http://94.100.26.141:25789/api/chat'
     data = {
         'model': 'gemma:2b',
-        'prompt': prompt,
+        'messages': [
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": USER_PROMPT_1},
+            {"role": "assistant", "content": ASSISTANT_PROMPT_1},
+            {"role": "user", "content": prompt}
+        ],
         'json': True,
-        'stream': False
+        'stream': False,
+        'options': { # for reproducible result
+            'seed': 42,
+            'temperature': 0
+        },
+        'keep-alive': '20m'
     }
     response = requests.post(url, json = data)
     return response.json()
 
 def generatePrompt(text):
-    prompt = """
-        [instruction]: extract brand's name in comman separated format from [tweet] below. if you cannot extract NER just reply with 'no entity'
-        [tweet]:
-    """
-    prompt += text
+    PROMPT = (
+        "Entity Definition:\n"
+        "1. PERSON: Short name or full name of a person from any geographic regions.\n"
+        "2. DATE: Any format of dates. Dates can also be in natural language.\n"
+        "3. LOC: Name of any geographic location, like cities, countries, continents, districts etc.\n"
+        "4. ORG: Name of the companies like Google, samsung, Apple etc.\n"
+        "5. NUMBERS: Numerical entites which are numerically present or mentioned in words like 7000, half of dozen etc.\n"
+        "\n"
+        "Output Format:\n"
+        "{{'PERSON': [list of entities present], 'DATE': [list of entities present], 'LOC': [list of entities present],'ORG': [list of entities present],'NUMBERS': [list of entities present]}}\n"
+        "If no entities are presented in any categories keep it None\n"
+        "\n"
+        "Examples:\n"
+        "\n"
+        "1. Sentence: USA and India are friends. G20 summit going to held in India in September 2023. Indian Prime Minister Narendra Modi will be hosting it and TATA will be giving charity of $150 Million.\n"
+        "Output: {{'PERSON': ['Narendra Modi'], 'DATE': ['September 2023'], 'LOC': ['USA','India','India'],'ORG':['TATA'],'NUMBERS':['150 Million']}}\n"
+        "\n"
+        "2. Sentence: Mr.John and Sunita Roy are friends and they meet each other on 24/03/1998 in Samsung while they were co-workers and shared Rs.8000 in exchange for some work.\n"
+        "Output: {{'PERSON': ['Mr. John', 'Sunita Roy'], 'DATE': ['24/03/1998'], 'LOC': ['None'],'ORG':['Samsung'],'NUMBERS':['8000']}}\n"
+        "\n"
+        "Input:\n"
+        "Sentence: {}\n"
+        "Output: "
+    )
+    prompt = PROMPT.format(text)
     return prompt
 
 def extractProduct(text):

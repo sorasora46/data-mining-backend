@@ -1,12 +1,21 @@
 from sklearn.feature_extraction.text import CountVectorizer
 from nltk.stem.porter import *
 import pickle
+import json
 
-from services.NLPService import clean, extractOrg
+from services.NLPService import clean, extractOrg, extractProductOllama
 from services.DBService import searchTweetByMultipleOrgs, listToDictEmptyArray, searchTweetContainProductAndOrg
 
 def getSentimentAnalysis(tweet):
-    orgList = extractOrg(clean(tweet))
+    response = extractProductOllama(tweet)
+    responseJSONString = str(response['message']['content']).replace('\'None\'', '').replace('\'', '\"')
+    responseJSON = json.loads(responseJSONString)
+
+    try:
+        orgList = responseJSON['ORG']
+    except:
+        orgList = []
+
     if orgList == None:
         return
 
