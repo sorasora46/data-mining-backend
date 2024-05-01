@@ -21,8 +21,7 @@ def analyze(tweets):
     result = []
     for i in range(len(tweets)):
         # do sentiment analysis
-        # score = predictData(tweets[i])
-        score = 1
+        score = predictData(tweets[i])
         result.append(score)
     return result
 
