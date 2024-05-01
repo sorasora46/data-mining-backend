@@ -2,21 +2,15 @@ from sklearn.feature_extraction.text import CountVectorizer
 from nltk.stem.porter import *
 import pickle
 
-from services.NLPService import clean, extractProduct, extractOrg
-from services.DBService import searchTweetByProduct, listToDictEmptyArray, searchTweetContainProductAndOrg
+from services.NLPService import clean, extractOrg
+from services.DBService import searchTweetByMultipleOrgs, listToDictEmptyArray, searchTweetContainProductAndOrg
 
 def getSentimentAnalysis(tweet):
-    productName = extractProduct(clean(tweet))
-    if productName == None:
+    orgList = extractOrg(clean(tweet))
+    if orgList == None:
         return
 
-    productTweets = searchTweetByProduct(productName)
-    orgs = findOrgInTweets(productTweets)
-    orgsWithTweets = {}
-    for org in orgs:
-        tweets = searchTweetContainProductAndOrg(productName, org)
-        if len(tweets) > 0:
-            orgsWithTweets[org] = tweets
+    orgsWithTweets = searchTweetByMultipleOrgs(orgList)
 
     result = []
     for org in orgsWithTweets:
