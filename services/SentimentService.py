@@ -6,7 +6,8 @@ from services.NLPService import clean, extractProduct, extractOrg
 from services.DBService import searchTweetByProduct, listToDictEmptyArray, searchTweetContainProductAndOrg
 
 def getSentimentAnalysis(tweet):
-    productName = extractProduct(clean(tweet))
+    productName = 'aws'
+    # productName = extractProduct(clean(tweet))
     if productName == None:
         return
 
