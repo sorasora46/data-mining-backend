@@ -7,16 +7,23 @@ stopWords = set(stopwords.words('english')).union(set(ENGLISH_STOP_WORDS))
 # 'en_core_web_trf' -> for accuracy
 # 'en_core_web_sm' -> for efficient
 spacyModel = 'en_core_web_trf'
-nerModel = 'resources/model-best'
+# nerModel = 'resources/model-best'
 
 nlp = spacy.load(spacyModel)
-ner = spacy.load(nerModel)
+# ner = spacy.load(nerModel)
 
-def extractProduct(text):
+def extractOrg(text):
     doc = nlp(text)
     # doc = ner(text)
     # custom model use 'BRAND' instead of 'ORG'
     # orgEnts = [ent.text for ent in doc.ents if ent.label_ == 'BRAND' or ent.label_ == 'ORG']
+    orgEnts = [ent.text for ent in doc.ents if ent.label_ == 'ORG']
+    if len(orgEnts) > 0:
+        return orgEnts[0]
+    return
+
+def extractProduct(text):
+    doc = nlp(text)
     productEnts = [ent.text for ent in doc.ents if ent.label_ == 'PRODUCT']
     if len(productEnts) > 0:
         return productEnts[0]

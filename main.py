@@ -4,7 +4,7 @@ from services.SentimentService import getSentimentAnalysis
 
 app = FastAPI()
 
-@app.get("/sentiment")
+@app.post("/sentiment")
 def getSentimentsFromTweet(tweetRequest: TweetRequest):
     result = getSentimentAnalysis(tweetRequest.tweet)
     return { "result": result }
