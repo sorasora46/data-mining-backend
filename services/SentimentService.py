@@ -7,7 +7,8 @@ from services.DBService import searchTweetByMultipleOrgs, listToDictEmptyArray, 
 
 
 def getSentimentAnalysis(tweet):
-    orgList = extractOrg(clean(tweet))
+    # orgList = extractOrg(clean(tweet))
+    orgList = ['aws']
     if orgList == None:
         return
 
