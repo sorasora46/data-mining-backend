@@ -113,9 +113,13 @@ def fuzzyLogic(sentiments):
         fuzzy['excited'] += sentiments - 5
 
     response = ""
-
+    i = 0
     for key in fuzzy:
         if fuzzy[key] > 0:
-            response += key + ": " + f'{fuzzy[key]:.2f}' + ", "
+            if i != 0:
+                response += ", "
+            response += key + ": " + f'{fuzzy[key]:.2f}'
+            i += 1
+
 
     return response
