@@ -1,8 +1,17 @@
 from fastapi import FastAPI
 from models.TweetRequest import TweetRequest
 from services.SentimentService import getSentimentAnalysis
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/sentiment")
 def getSentimentsFromTweet(tweetRequest: TweetRequest):
