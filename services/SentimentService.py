@@ -116,6 +116,6 @@ def fuzzyLogic(sentiments):
 
     for key in fuzzy:
         if fuzzy[key] > 0:
-            response += key + ": " + str(fuzzy[key]) + ", "
+            response += key + ": " + f'{fuzzy[key]:.2f}' + ", "
 
     return response
