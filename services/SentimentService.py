@@ -2,12 +2,12 @@ from sklearn.feature_extraction.text import CountVectorizer
 from nltk.stem.porter import *
 import pickle
 
-from services.NLPService import clean, extractOrg
+from services.NLPService import clean, extractProduct
 from services.DBService import searchTweetByMultipleOrgs
 
 def getSentimentAnalysis(tweet):
-    orgList = extractOrg(clean(tweet))
-    if orgList == None:
+    productList = extractProduct(clean(tweet))
+    if productList == None:
         return
 
     orgTweets = searchTweetByMultipleOrgs(orgList)

@@ -12,16 +12,14 @@ nerModel = 'resources/model-best'
 nlp = spacy.load(spacyModel)
 ner = spacy.load(nerModel)
 
-def extractOrg(text):
-    # doc = ner('Laptop Dell Inspiron X546')
-    # doc = ner('Black Pelikan Pencil 16mm')
-    # print(doc.ents[0], doc.ents[0].label_)
-
-    doc = ner(text)
+def extractProduct(text):
+    doc = nlp(text)
+    # doc = ner(text)
     # custom model use 'BRAND' instead of 'ORG'
-    orgEnts = [ent.text for ent in doc.ents if ent.label_ == 'BRAND' or ent.label_ == 'ORG']
-    if len(orgEnts) > 0:
-        return orgEnts
+    # orgEnts = [ent.text for ent in doc.ents if ent.label_ == 'BRAND' or ent.label_ == 'ORG']
+    productEnts = [ent.text for ent in doc.ents if ent.label_ == 'PRODUCT']
+    if len(productEnts) > 0:
+        return productEnts
     return
 
 def extractLink(text):
