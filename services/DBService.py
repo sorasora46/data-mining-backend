@@ -4,6 +4,7 @@ dataset = pd.read_csv('resources/tweets-engagement-metrics.csv')
 
 def searchTweetByProduct(text, n = 50):
     targetDataFrame = dataset[dataset['text'].str.contains(text, case=False)]
+    targetDataFrame = targetDataFrame[targetDataFrame['Lang'] == 'en']
     firstNRows = targetDataFrame.head(n)
     results = firstNRows['text'].tolist()
     resultsNoDuplicate = set(results)
@@ -11,6 +12,7 @@ def searchTweetByProduct(text, n = 50):
 
 def searchTweetContainProductAndOrg(product, org, n = 50):
     targetDataFrame = dataset[dataset['text'].str.contains(product, case=False) & dataset['text'].str.contains(org, case=False)]
+    targetDataFrame = targetDataFrame[targetDataFrame['Lang'] == 'en']
     firstNRows = targetDataFrame.head(n)
 
     unique_tweets = set()  # Set to track unique tweets
@@ -26,6 +28,7 @@ def searchTweetContainProductAndOrg(product, org, n = 50):
 
 def searchTweetByOrg(text, n = 50):
     targetDataFrame = dataset[dataset['text'].str.contains(text, case=False)]
+    targetDataFrame = targetDataFrame[targetDataFrame['Lang'] == 'en']
     firstNRows = targetDataFrame.head(n)
 
     unique_tweets = set()  # Set to track unique tweets
@@ -40,9 +43,12 @@ def searchTweetByOrg(text, n = 50):
     return results
 
 def searchTweetByMultipleOrgs(orgs, n = 50):
-    result = listToDictEmptyArray(orgs)
+    # result = listToDictEmptyArray(orgs)
+    result = {}
     for org in orgs:
-        result[org] = searchTweetByOrg(org, n)
+        tweets = searchTweetByOrg(org.lower(), n)
+        if len(tweets) > 0:
+            result[org] = tweets
     return result
     
 def listToDictEmptyArray(list):
