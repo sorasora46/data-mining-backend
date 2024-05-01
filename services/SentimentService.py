@@ -1,8 +1,15 @@
+from sklearn.feature_extraction.text import CountVectorizer
+from nltk.stem.porter import *
+import pickle
+
 from services.NLPService import clean, extractOrg
-from services.DBService import searchTweetByOrg, searchTweetByMultipleOrgs
+from services.DBService import searchTweetByMultipleOrgs
 
 def getSentimentAnalysis(tweet):
     orgList = extractOrg(clean(tweet))
+    if orgList == None:
+        return
+
     orgTweets = searchTweetByMultipleOrgs(orgList)
     orgSentiment = orgTweets
     for org in orgTweets:
@@ -14,8 +21,9 @@ def analyze(tweets):
     result = []
     for i in range(len(tweets)):
         # do sentiment analysis
-        # result = getSentiment(tweet)
-        result.append(5)
+        # score = predictData(tweets[i])
+        score = 1
+        result.append(score)
     return result
 
 # receive list of sentiment score
@@ -24,3 +32,37 @@ def average(score):
     for i in score:
         sum += i
     return sum / len(score)
+
+def predictData(text):
+    with open('resources/model.pkl','rb') as f:
+        clf2 = pickle.load(f)
+    
+    cv=CountVectorizer(max_features=5000,stop_words='english')
+    text = clean(text)
+    data = clf2.predict([text])
+    return data[0]
+
+# def stem(text):
+#     ps=PorterStemmer()
+#     y=[]
+#     for i in text.split():
+#         y.append(ps.stem(i))
+#     return " ".join(y)
+
+# def preprocessing(text):
+#     # lower case
+#     text = text.lower()
+#     # remove url
+#     text = ' '.join(x for x in text.split() if 
+#                     not x.startswith("http://") or 
+#                     not x.startswith("https://")
+#                     )
+#     text = ' '.join(x for x in text.split() if 
+#                     not x.startswith("@")
+#                     )
+#     text = text.replace("rt","")
+#     # trim
+#     text = text.strip()
+#     # remove stop words
+#     text = stem(text)
+#     return text

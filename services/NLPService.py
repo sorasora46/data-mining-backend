@@ -15,7 +15,7 @@ def extractOrg(text):
     orgEnts = [ent.text for ent in doc.ents if ent.label_ == 'ORG']
     if len(orgEnts) > 0:
         return orgEnts
-    return text
+    return
 
 def extractLink(text):
     doc = nlp(text)
@@ -46,7 +46,7 @@ def clean(text):
     text = text.replace('rt', '')
     text = text.replace('RT', '')
     text = text.replace('Rt', '')
-    text = text.replace('rR', '')
+    text = text.replace('rT', '')
     
     text = text.replace('#', '')
 
