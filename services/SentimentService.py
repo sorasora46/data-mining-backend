@@ -33,8 +33,16 @@ def getSentimentAnalysis(tweet):
         mean = fuzzyLogic(average(sentiments))
         data['brand'] = org
         data['sentiment'] = mean
-        data['examples'] = sentiments[:2]
+        example = []
+        for e in sentiments[:2]:
+            example.append({
+                'sentiment': fuzzyLogic(e['sentiment']),
+                'text': e['text'],
+                'from': e['from']
+            })
         result.append(data)
+        data['examples'] = example
+
     return result
 
 
