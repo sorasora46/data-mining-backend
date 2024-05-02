@@ -2,6 +2,7 @@ import spacy
 import requests
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
+from constants.companies import tech_companies
 import nltk
 import ssl
 
@@ -81,6 +82,9 @@ def generatePrompt(text):
         "2. Sentence: Mr.John and Sunita Roy are friends and they meet each other on 24/03/1998 in Samsung while they were co-workers and shared Rs.8000 in exchange for some work.\n"
         "Output: {{'PERSON': ['Mr. John', 'Sunita Roy'], 'DATE': ['24/03/1998'], 'LOC': ['None'],'ORG':['Samsung'],'NUMBERS':['8000']}}\n"
         "\n"
+        "3. Sentence: Google and AWS are famous cloud provider that many companies around the world are using right now!\n"
+        "Output: {{'PERSON': ['None'], 'DATE': ['None'], 'LOC': ['world'], 'ORG': ['Google', 'AWS'], 'NUMERS': ['None']}}\n"
+        "\n"
         "Input:\n"
         "Sentence: {}\n"
         "Output: "
@@ -134,3 +138,19 @@ def clean(text):
     cleanedText = ' '.join(tokens).lower().strip()
 
     return cleanedText
+
+def extract_tech_companies(text):
+    # Convert the input text to lowercase for case-insensitive matching
+    text = text.lower()
+    
+    # Initialize an empty list to store found companies
+    found_companies = []
+    
+    # Iterate through each company name in the list
+    for company in tech_companies:
+        # Check if the company name appears in the input text
+        if company.lower() in text:
+            found_companies.append(company)
+    
+    # Return the list of found companies
+    return found_companies

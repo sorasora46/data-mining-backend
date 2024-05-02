@@ -3,7 +3,7 @@ from nltk.stem.porter import *
 import pickle
 import json
 
-from services.NLPService import clean, extractOrg, extractProductOllama
+from services.NLPService import clean, extractOrg, extractProductOllama, extract_tech_companies
 from services.DBService import searchTweetByMultipleOrgs, listToDictEmptyArray, searchTweetContainProductAndOrg
 
 
@@ -19,6 +19,10 @@ def getSentimentAnalysis(tweet):
 
     if orgList == None:
         return
+
+    orgList = orgList + extract_tech_companies(tweet)
+    orgSet = set(orgList)
+    orgList = list(orgSet)
 
     orgsWithTweets = searchTweetByMultipleOrgs(orgList)
 
