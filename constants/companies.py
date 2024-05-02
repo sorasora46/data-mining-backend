@@ -46,5 +46,8 @@ tech_companies = [
     "Roblox",
     "Activision Blizzard",
     "Electronic Arts",
-    "Unity Technologies"
+    "Unity Technologies",
+    "AWS",
+    "Amazon Web Service",
+    "Amazon Web Services"
 ]
